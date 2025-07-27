@@ -776,6 +776,7 @@ export default function QRGenerator() {
                                 variant="outline"
                                 onClick={() => downloadQRCode(qrCode, "png")}
                                 className="flex-1 min-w-[100px] text-xs min-h-[36px] justify-center"
+                                disabled={isExpired(qrCode)}
                               >
                                 <Download className="w-3 h-3 mr-1" />
                                 PNG
@@ -785,6 +786,7 @@ export default function QRGenerator() {
                                 variant="outline"
                                 onClick={() => downloadQRCode(qrCode, "svg")}
                                 className="flex-1 min-w-[100px] text-xs min-h-[36px] justify-center"
+                                disabled={isExpired(qrCode)}
                               >
                                 <Download className="w-3 h-3 mr-1" />
                                 SVG
@@ -792,8 +794,9 @@ export default function QRGenerator() {
                               <Button
                                 size="sm"
                                 variant="outline"
-                                onClick={() => copyQRCodeToClipboard(qrCode.qrCodeDataUrl)} // Changed to copy QR code image
+                                onClick={() => copyQRCodeToClipboard(qrCode.qrCodeDataUrl)}
                                 className="flex-1 min-w-[100px] text-xs min-h-[36px] justify-center"
+                                disabled={isExpired(qrCode)}
                               >
                                 <Copy className="w-3 h-3 mr-1" />
                                 {t("copy")}
