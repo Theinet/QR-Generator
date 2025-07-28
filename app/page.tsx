@@ -56,7 +56,7 @@ const contentTypes = [
 ]
 
 export default function QRGenerator() {
-  const [language, setLanguage] = useState<Language>("uk")
+  const [language, setLanguage] = useState<Language>("en")
   const [qrCodes, setQrCodes] = useState<QRCodeData[]>([])
   const [currentQRPreview, setCurrentQRPreview] = useState<string>("")
   const [formData, setFormData] = useState({
