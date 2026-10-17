@@ -1,56 +1,49 @@
-# QR Code Generator
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+# THE INET QR Code Generator
 
-A professional, secure, and customizable QR code generator built with Next.js and Tailwind CSS. Generate high-quality QR codes entirely within your browser — no server, no data tracking.
+A free QR code generator for websites, Wi-Fi, text, email, phone numbers, SMS and locations. Content and logos are processed in the browser.
 
-> 🔐 100% client-side — your data never leaves your device.
+**Live app:** [qr.theinet.ch](https://qr.theinet.ch)
 
----
+## Languages
 
-## 🚀 Features
+[Deutsch (Schweiz)](https://qr.theinet.ch/de) · [Français](https://qr.theinet.ch/fr) · [Italiano](https://qr.theinet.ch/it) · [English](https://qr.theinet.ch/en) · [Українська](https://qr.theinet.ch/uk)
 
-- Custom colors, size, and transparent backgrounds
-- Support for logos overlayed onto QR codes
-- Multiple data types: URL, Email, Phone, SMS, Wi-Fi, Location
-- Export options: PNG and SVG
-- Local-only processing: no data leaves your device
-- Encrypted local storage
-- Responsive and mobile-friendly interface
-- Multi-language support: English and Ukrainian
+The entry page respects a saved language choice, then the browser's supported languages, with German as the fallback. Explicit language URLs always take precedence. Project source code, comments and primary technical documentation remain in English.
 
----
+## Features
 
-## 🧰 Tech Stack
+- PNG and SVG downloads using the same encoded content.
+- Custom colors, image sizes and optional PNG/JPEG/WebP logos.
+- Responsive forms, previews and keyboard-accessible language and privacy controls.
+- Local QR history, clipboard copy and deletion.
+- Local history reminders; downloaded static QR codes do not expire.
+- Translated metadata, canonical URLs, hreflang and sitemap for all five languages.
 
-- **Framework**: Next.js 14 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **UI Components**: shadcn/ui
-- **QR Generator**: `qrcode` package
-- **Icons**: lucide-react
+## Privacy
 
----
+QR content and uploaded logos are processed locally. History is stored in this browser **without encryption** and may be visible to other people using the same browser profile. Delete entries or clear browser data to remove history. Download a copy before clearing it.
 
-## 🔒 Official Website
+The browser contacts our hosting provider to load the website. External links open their respective services. No account is required to generate QR codes.
 
-This open-source project is officially deployed at:
+## Development
 
-👉 **https://qr-generator-theinet.vercel.app**
-
-Beware of unofficial mirror sites — they may contain modified or malicious code.  
-Always verify the domain before using the application to protect your data.
-
-## 📦 Getting Started
-
-```bash
-git clone https://github.com/Theinet/QR-Generator
-cd QR-Generator
-npm install
-npm run dev
+```sh
+pnpm install
+pnpm dev
 ```
+
+```sh
+pnpm typecheck
+pnpm build
+pnpm start
+```
+
+Stack: Next.js 14, React, TypeScript, Tailwind CSS, Radix UI and `qrcode`.
+
+## Contact
+
+[THE INET](https://www.theinet.ch) · [contact@theinet.ch](mailto:contact@theinet.ch)
 
 ## License
 
-This website is fully open-source and available under the [MIT License](./LICENSE).
-
-You are free to use, copy, modify, and distribute this website — even for commercial purposes — as long as you include the original license.
+See [LICENSE](LICENSE) for the repository's MIT license.

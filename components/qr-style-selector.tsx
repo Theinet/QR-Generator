@@ -1,102 +1,29 @@
 "use client"
-
-import type React from "react"
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Upload, X, ChevronDown, ChevronUp } from "lucide-react"
-import type { Language, TranslationKey } from "@/lib/i18n"
+import { Upload, X, ChevronDown } from "lucide-react"
 import { getTranslation } from "@/lib/i18n"
+import type { Language } from "@/lib/i18n"
 
-interface QRStyleSelectorProps {
-  language: Language
-  qrLogo: string
-  onLogoUpload: (file: File) => void
-  onRemoveLogo: () => void
-}
-
-export default function QRStyleSelector({ language, qrLogo, onLogoUpload, onRemoveLogo }: QRStyleSelectorProps) {
-  const [logoFile, setLogoFile] = useState<File | null>(null)
-  const [expandedSections, setExpandedSections] = useState({
-    logo: false,
-  })
-
-  const t = (key: TranslationKey) => getTranslation(language, key)
-
-  const toggleSection = (section: keyof typeof expandedSections) => {
-    setExpandedSections((prev) => ({ ...prev, [section]: !prev[section] }))
-  }
-
-  const handleLogoFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file) {
-      setLogoFile(file)
-      onLogoUpload(file)
-    }
-  }
-
-  return (
-    <div className="space-y-3">
-      {/* Logo Upload */}
-      <Card className="border-gray-200">
-        <CardHeader
-          className="pb-2 cursor-pointer hover:bg-gray-50 transition-colors"
-          onClick={() => toggleSection("logo")}
-        >
-          <CardTitle className="text-sm flex items-center justify-between">
-            <span className="flex items-center gap-2">
-              {language === "uk" ? "Логотип" : "Logo"}
-              {qrLogo && <span className="text-xs text-green-600">✓</span>}
-            </span>
-            {expandedSections.logo ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-          </CardTitle>
-        </CardHeader>
-        {expandedSections.logo && (
-          <CardContent className="pt-0">
-            {!qrLogo ? (
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
-                <Upload className="w-8 h-8 mx-auto text-gray-400 mb-2" />
-                <p className="text-sm text-gray-600 mb-3">
-                  {language === "uk" ? "Перетягніть файл або натисніть для вибору" : "Drag & drop or click to select"}
-                </p>
-                <Input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleLogoFileChange}
-                  className="hidden"
-                  id="logo-upload"
-                />
-                <Label htmlFor="logo-upload" className="cursor-pointer">
-                  <Button variant="outline" className="pointer-events-none bg-transparent">
-                    {language === "uk" ? "Вибрати файл" : "Choose File"}
-                  </Button>
-                </Label>
-              </div>
-            ) : (
-              <div className="flex items-center gap-4 p-4 border rounded-lg bg-gray-50">
-                <img
-                  src={qrLogo || "/placeholder.svg"}
-                  alt="Logo"
-                  className="w-16 h-16 object-contain border rounded"
-                />
-                <div className="flex-1">
-                  <p className="text-sm font-medium">
-                    {logoFile?.name || (language === "uk" ? "Логотип завантажено" : "Logo uploaded")}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {logoFile?.size ? `${(logoFile.size / 1024 / 1024).toFixed(1)} MB` : ""}
-                  </p>
-                </div>
-                <Button variant="outline" size="sm" onClick={onRemoveLogo}>
-                  <X className="w-4 h-4" />
-                </Button>
-              </div>
-            )}
-          </CardContent>
-        )}
-      </Card>
-    </div>
-  )
+export default function QRStyleSelector({ language, qrLogo, onLogoUpload, onRemoveLogo }: { language: Language; qrLogo: string; onLogoUpload: (file: File) => void; onRemoveLogo: () => void }) {
+  const [expanded, setExpanded] = useState(false)
+  const [fileName, setFileName] = useState("")
+  const input = useRef<HTMLInputElement>(null)
+  const t = (key: Parameters<typeof getTranslation>[1]) => getTranslation(language, key)
+  return <div className="rounded-lg border border-gray-200">
+    <button type="button" onClick={() => setExpanded(!expanded)} aria-expanded={expanded} aria-controls="logo-options" className="flex w-full items-center justify-between px-4 py-3 text-sm font-medium hover:bg-gray-50">
+      <span>{t("addLogo")}{qrLogo ? " ✓" : ""}</span><ChevronDown className={`w-4 h-4 shrink-0 transition-transform ${expanded ? "rotate-180" : ""}`} />
+    </button>
+    {expanded && <div id="logo-options" className="p-4 pt-1">
+      <input ref={input} type="file" accept="image/png,image/jpeg,image/webp" className="sr-only" aria-label={t("logoImage")} onChange={(e) => { const file = e.target.files?.[0]; if (file) { setFileName(file.name); onLogoUpload(file) }; e.target.value = "" }} />
+      {!qrLogo ? <div className="rounded-lg border-2 border-dashed p-4 text-center" onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); const file = e.dataTransfer.files[0]; if (file) { setFileName(file.name); onLogoUpload(file) } }}>
+        <p className="text-sm text-gray-600 mb-3">PNG, JPEG, WebP · {t("logoLimit")}</p>
+        <Button type="button" variant="outline" onClick={() => input.current?.click()}><Upload className="w-4 h-4 mr-2" />{t("chooseImage")}</Button>
+      </div> : <div className="flex gap-3 items-center min-w-0">
+        <img src={qrLogo} alt={t("uploadedLogo")} className="w-14 h-14 shrink-0 object-contain rounded border" />
+        <p className="flex-1 min-w-0 break-all text-sm">{fileName}</p>
+        <Button type="button" variant="outline" size="icon" onClick={onRemoveLogo} aria-label={t("removeLogo")}><X className="w-4 h-4" /></Button>
+      </div>}
+    </div>}
+  </div>
 }

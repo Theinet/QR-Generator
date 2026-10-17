@@ -31,12 +31,12 @@ export default function QRPreview({ qrDataUrl, title, language, onDownloadPNG, o
 
   return (
     <Card className="mt-6">
-      <CardContent className="p-6">
+      <CardContent className="p-4 sm:p-6">
         <h3 className="text-lg font-semibold mb-4 text-center">{t("preview")}</h3>
 
         <div className="flex flex-col items-center space-y-4">
           <div
-            className={`transition-all duration-500 ease-out transform ${
+            className={`w-full max-w-72 transition-all duration-500 ease-out transform ${
               isVisible ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-4"
             }`}
           >
@@ -44,7 +44,7 @@ export default function QRPreview({ qrDataUrl, title, language, onDownloadPNG, o
               <img
                 src={qrDataUrl || "/placeholder.svg"}
                 alt={title}
-                className="w-64 h-64 mx-auto"
+                className="w-full h-auto aspect-square mx-auto"
                 style={{ imageRendering: "pixelated" }}
               />
             </div>

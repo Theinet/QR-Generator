@@ -157,7 +157,7 @@ const drawCornerRing = (
       const innerRadius = outerRadius * 0.5
       ctx.beginPath()
       ctx.roundRect(x, y, size, size, outerRadius)
-      ctx.roundRect(x + thickness, y + thickness, size - thickness * 2, size - thickness * 2, innerRadius, true)
+      ctx.roundRect(x + thickness, y + thickness, size - thickness * 2, size - thickness * 2, innerRadius)
       ctx.fill()
       break
 
@@ -206,30 +206,6 @@ const drawLogo = (ctx: CanvasRenderingContext2D, logoDataUrl: string, canvasSize
   const img = new Image()
   img.crossOrigin = "anonymous"
   img.onload = () => {
-    const logoSize = canvasSize * 0.2
-    const x = (canvasSize - logoSize) / 2
-    const y = (canvasSize - logoSize) / 2
-
-    // Draw white background circle for logo
-    ctx.fillStyle = "white"
-    ctx.beginPath()
-    ctx.arc(canvasSize / 2, canvasSize / 2, logoSize * 0.6, 0, 2 * Math.PI)
-    ctx.fill()
-
-    // Draw logo
-    ctx.drawImage(img, x, y, logoSize, logoSize)
-  }
-  img.src = logoDataUrl
-}
-
-export const drawLogoOnQR = (canvas: HTMLCanvasElement, logoDataUrl: string) => {
-  const ctx = canvas.getContext("2d")
-  if (!ctx) return
-
-  const img = new Image()
-  img.crossOrigin = "anonymous"
-  img.onload = () => {
-    const canvasSize = canvas.width
     const logoSize = canvasSize * 0.2
     const x = (canvasSize - logoSize) / 2
     const y = (canvasSize - logoSize) / 2
